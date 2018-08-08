@@ -1,7 +1,6 @@
 pipeline {
 	agent any
 	
-	def pom = readMavenPom file: 'pom.xml'
 	stages {
 		stage('Example') {
             steps {
