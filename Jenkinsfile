@@ -1,6 +1,7 @@
 pipeline {
 	agent any
-
+	
+	def pom = readMavenPom file: 'pom.xml'
 	stages {
 		stage('Example') {
             steps {
@@ -8,8 +9,8 @@ pipeline {
                 echo "DEPLOY_ENV = ${DEPLOY_ENV}"
                 echo "VALID_ENV = ${VALID_ENV}"
                 echo "CHOICE_ENV = ${CHOICE_ENV}"
-                pom = readMavenPom file: 'pom.xml'
-                echo "Pom ${pom.version}"
+                
+                echo "Pom ${POM_VERSION}"
             }
         }
 		stage("Build") {
