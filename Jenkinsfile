@@ -8,7 +8,8 @@ pipeline {
                 echo "DEPLOY_ENV = ${DEPLOY_ENV}"
                 echo "VALID_ENV = ${VALID_ENV}"
                 echo "CHOICE_ENV = ${CHOICE_ENV}"
-                echo "CHOICE_ENV = ${POM_VERSION}"
+                pom = readMavenPom file: 'pom.xml'
+                echo "Pom ${pom.version}"
             }
         }
 		stage("Build") {
