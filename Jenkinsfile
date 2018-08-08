@@ -1,9 +1,11 @@
 pipeline {
+	environment {
+     pom = readMavenPom file: 'pom.xml'
+   }
 	agent any
 	
 	stages {
-		stage('Example') {
-			def pom = readMavenPom file: 'pom.xml'
+		stage('Example') {			
             steps {
                 echo "Running ${env.BUILD_ID} on ${env.JENKINS_URL}"
                 echo "DEPLOY_ENV = ${DEPLOY_ENV}"
