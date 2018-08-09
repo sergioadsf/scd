@@ -24,7 +24,7 @@ pipeline {
         }
 		stage("Build") {
 			steps {
-    			sh 'make'
+    			sh 'mvn --version'
 			}
   		}
   		stage("Test") {
@@ -40,7 +40,7 @@ pipeline {
 	              }
 	            }
             	steps {
-                	sh 'make publish'
+			echo ${currentBuild.result}
             	}		    
   			}
   		}
