@@ -19,6 +19,7 @@ pipeline {
                 echo "VERSION ${VERSION}"
                 echo "BUILD_ID ${env.BUILD_ID}"
                 echo "JAVA_HOME ${env.JAVA_HOME}/bin:${env.PATH}"
+		echo "JAVA_HOME ${env.MAVEN_HOME}"
             }
         }
 		stage("Build") {
