@@ -39,8 +39,9 @@ pipeline {
 	                currentBuild.result == null || currentBuild.result == 'SUCCESS' 
 	              }
 	            }
+				echo "Current - ${currentBuild}"
             	steps {
-			echo "Current - ${currentBuild.result}"
+			echo "Fim"
             	}		    
   			}
   		}
