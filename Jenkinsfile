@@ -34,14 +34,14 @@ pipeline {
   		}
   		stage("Deploy") {
   			steps {
+				echo "Current - ${currentBuild}"
 				when {
 	              expression {
 	                currentBuild.result == null || currentBuild.result == 'SUCCESS' 
 	              }
 	            }
-				echo "Current - ${currentBuild}"
             	steps {
-			echo "Fim"
+					echo "Fim"
             	}		    
   			}
   		}
