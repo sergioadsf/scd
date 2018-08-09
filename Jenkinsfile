@@ -3,6 +3,7 @@ pipeline {
     	//Use Pipeline Utility Steps plugin to read information from pom.xml into env variables
 		IMAGE = readMavenPom().getArtifactId()
     	VERSION = readMavenPom().getVersion()
+    	folderpath = '/home/sergio/Downloads/teste'
   	}
    	
 	agent any
@@ -24,12 +25,12 @@ pipeline {
         }
 		stage("Build") {
 			steps {
-    				sh 'git clone https://github.com/sergioadsf/scd.git /home/sergio/Downloads/teste'
+    				sh 'git clone https://github.com/sergioadsf/scd.git ${folderpath}'
 			}
   		}
   		stage("Test") {
   		    steps {
-				sh 'make check || true'
+				sh 'mvn -f ${folderpath}'
   		    }
   		}
   		stage("Deploy") {
