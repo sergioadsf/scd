@@ -30,7 +30,7 @@ pipeline {
   		}
   		stage("Test") {
   		    steps {
-				sh 'mvn clean install ${folderpath}'
+				sh 'mvn clean install -f ${folderpath}'
   		    }
   		}
   		stage("Deploy") {
