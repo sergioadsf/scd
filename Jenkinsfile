@@ -19,12 +19,12 @@ pipeline {
                 echo "VERSION ${VERSION}"
                 echo "BUILD_ID ${env.BUILD_ID}"
                 echo "JAVA_HOME ${env.JAVA_HOME}/bin:${env.PATH}"
-		echo "JAVA_HOME ${env.MAVEN_HOME}"
+				echo "JAVA_HOME ${env.MAVEN_HOME}"
             }
         }
 		stage("Build") {
 			steps {
-    			sh 'mvn --version'
+    			git clone 'https://github.com/sergioadsf/scd.git /home/sergio/Downloads/teste'
 			}
   		}
   		stage("Test") {
@@ -34,15 +34,7 @@ pipeline {
   		}
   		stage("Deploy") {
   			steps {
-				echo "Current - ${currentBuild}"
-				when {
-	              expression {
-	                currentBuild.result == null || currentBuild.result == 'SUCCESS' 
-	              }
-	            }
-            	steps {
-					echo "Fim"
-            	}		    
+				echo "Current - ${currentBuild.result}"
   			}
   		}
 	}
