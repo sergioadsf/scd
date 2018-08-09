@@ -17,6 +17,8 @@ pipeline {
                 
                 echo "IMAGE ${IMAGE}"
                 echo "VERSION ${VERSION}"
+                echo "BUILD_ID ${env.BUILD_ID}"
+                echo "JAVA_HOME ${env.JAVA_HOME}/bin:${env.PATH}"
             }
         }
 		stage("Build") {
