@@ -40,7 +40,7 @@ pipeline {
 	              }
 	            }
             	steps {
-			echo ${currentBuild.result}
+			echo "Current - ${currentBuild.result}"
             	}		    
   			}
   		}
