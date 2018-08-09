@@ -24,7 +24,7 @@ pipeline {
         }
 		stage("Build") {
 			steps {
-    			git clone 'https://github.com/sergioadsf/scd.git /home/sergio/Downloads/teste'
+    				sh 'git clone https://github.com/sergioadsf/scd.git /home/sergio/Downloads/teste'
 			}
   		}
   		stage("Test") {
