@@ -56,10 +56,6 @@ pipeline {
 				    booleanParam defaultValue: true, description: 'Fazer deploy em Teste?', name: 'validar'
 				  }
 				}
-
-        		steps {
-            		echo "Hello, ${validar}, nice to meet you."
-        		}
   		    steps {
 				sh 'mvn clean install -f ${folderpath}'
   		    }
