@@ -2,16 +2,15 @@ import groovy.json.JsonSlurperClassic
 
 
 	def sendGETRequest(curl) {
-  sh "${curl} -o output.json"
+	  	sh "${curl} -o output.json"
+	
+	  	def workspace = pwd()		
+	  	def json = readFile("output.json")
+		def data = new JsonSlurperClassic().parseText(json)
+		echo "Versão do planejamento ${data.version.name}"
 
-  def workspace = pwd()
-		echo "aqui ${workspace}"
-  def json = readFile("output.json")
-def data = new JsonSlurperClassic().parseText(json)
-  echo data.version.name
-
-  return json;
-}
+  		return data;
+	}
 
 pipeline {
 	
