@@ -10,7 +10,9 @@ node {
 	def slurper = new JsonSlurper().parseText(str)
    	
 	//agent any
-	
+	stages{
+	    
+
 		stage('Example') {			
                 echo "Running ${env.BUILD_ID} on ${env.JENKINS_URL}"
                 echo "DEPLOY_ENV = ${DEPLOY_ENV}"
@@ -36,5 +38,6 @@ node {
   		}
   		stage("Deploy") {
 				echo "Current - ${currentBuild.result}"
+  		}
   		}
 }
