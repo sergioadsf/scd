@@ -1,19 +1,19 @@
 import groovy.json.JsonSlurper
-node {
-	
+pipeline {
+	environment {
     	//Use Pipeline Utility Steps plugin to read information from pom.xml into env variables
-	def IMAGE = readMavenPom().getArtifactId()
-	def VERSION = readMavenPom().getVersion()
-	def folderpath = '/home/sergio/Downloads/teste'
-	//def choice_env = ${CHOICE_ENV}
-	def str = '{"id":"12345678","name":"Sharon","email":"sharon\u0040example.com"}'
-	def slurper = new JsonSlurper().parseText(str)
+		IMAGE = readMavenPom().getArtifactId()
+    	VERSION = readMavenPom().getVersion()
+    	folderpath = '/home/sergio/Downloads/teste'
+    	str = '{"id":"12345678","name":"Sharon","email":"sharon\u0040example.com"}'
+		slurper = new JsonSlurper().parseText(str)
+  	}
    	
-	//agent any
-	//stages{
-	    
-
+	agent any
+	
+	stages {
 		stage('Example') {			
+            steps {
                 echo "Running ${env.BUILD_ID} on ${env.JENKINS_URL}"
                 echo "DEPLOY_ENV = ${DEPLOY_ENV}"
                 echo "VALID_ENV = ${VALID_ENV}"
@@ -21,24 +21,34 @@ node {
                 
                 echo "IMAGE ${IMAGE}"
                 echo "VERSION ${VERSION}"
-			echo "BUILD_ID ${env.BUILD_ID} ${slurper.id}"
+                echo "BUILD_ID ${env.BUILD_ID}"
                 echo "JAVA_HOME ${env.JAVA_HOME}/bin:${env.PATH}"
 				echo "JAVA_HOME ${env.MAVEN_HOME}"
-		    if(CHOICE_ENV == "12345678"){
+				script {
+					if(CHOICE_ENV == "Test"){
 			echo 'I only execute test'    
 		    }else {
 			echo 'I am not running test'    
-		    }
+		    }				    
+				}
+
+		    
+            }
         }
 		stage("Build") {
-			echo slurper.name
-    				//sh 'git clone https://github.com/sergioadsf/scd.git ${folderpath}'
+			steps {
+    				sh 'git clone https://github.com/sergioadsf/scd.git ${folderpath}'
+			}
   		}
   		stage("Test") {
-				//sh 'mvn clean install -f ${folderpath}'
+  		    steps {
+				sh 'mvn clean install -f ${folderpath}'
+  		    }
   		}
   		stage("Deploy") {
-				//echo "Current - ${currentBuild.result}"
+  			steps {
+				echo "Current - ${currentBuild.result}"
+  			}
   		}
-  		//}
+	}
 }
