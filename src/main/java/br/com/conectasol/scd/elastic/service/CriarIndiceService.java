@@ -62,7 +62,11 @@ public class CriarIndiceService extends AbsElasticService {
 			MField mapping = field.getAnnotation(MField.class);
 			if (mapping != null) {
 				Map<String, Object> fieldMap = new HashMap<>();
-				fieldMap.put("type", mapping.type());
+				String type = mapping.type();
+				fieldMap.put("type", type);
+				if("keyword".equals(type)) {
+					fieldMap.put("index", mapping.index());
+				}
 				String format = mapping.format();
 				if (!"".equals(format)) {
 					fieldMap.put("format", mapping.format());

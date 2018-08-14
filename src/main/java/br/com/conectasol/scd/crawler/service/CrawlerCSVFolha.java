@@ -5,49 +5,65 @@ import java.io.IOException;
 import java.net.URL;
 import java.nio.channels.Channels;
 import java.nio.channels.ReadableByteChannel;
+import java.nio.file.Files;
+import java.nio.file.Paths;
 import java.util.Collections;
 import java.util.List;
+import java.util.concurrent.Executors;
+import java.util.concurrent.ForkJoinPool;
+import java.util.concurrent.ThreadPoolExecutor;
+import java.util.concurrent.atomic.AtomicInteger;
 import java.util.logging.Logger;
+
+import javax.annotation.PostConstruct;
 
 import org.jsoup.Jsoup;
 import org.jsoup.nodes.Document;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Service;
 
 import br.com.conectasol.scd.util.CloseUtil;
+import br.com.conectasol.scd.util.PathProperties;
 
+@Service
 public class CrawlerCSVFolha {
 
-	private static final String URL = "http://www.transparencia.go.gov.br/dadosabertos/index.php?dir=FolhaPagamento%2F";
-	private static final String PATH = "/home/sergio/Downloads/files/";
-//	private final ThreadPoolExecutor executor;
-//	private static AtomicInteger at = new AtomicInteger(0);
+	@Autowired
+	private PathProperties prop;
+	private ThreadPoolExecutor executor;
+	private static AtomicInteger at = new AtomicInteger(0);
 
-	public CrawlerCSVFolha() {
-//		this.executor = (ThreadPoolExecutor) Executors.newFixedThreadPool(25);
+	@PostConstruct
+	public void init() {
+		this.executor = (ThreadPoolExecutor) Executors.newFixedThreadPool(10);
 	}
 
 	public List<String> buscarArquivos() throws IOException {
-		Document document = Jsoup.connect(URL).get();
+		Document document = Jsoup.connect(prop.getUrlfolha()).get();
 
-		document.select("div[id=listing]").select("a").parallelStream().forEach((element) -> {
-			final String urlDownload = element.attr("abs:href");
-			final String filename = element.attr("href");
-			downloadUsingNIO(urlDownload, PATH + filename.split("/")[1]);
-		});
-
-//		for (Element element : document.select("div[id=listing]").select("a")) {
+//		document.select("div[id=listing]").select("a").parallelStream().forEach((element) -> {
 //			final String urlDownload = element.attr("abs:href");
 //			final String filename = element.attr("href");
-////			this.executor.submit(() -> {
-////				try {
-////					Thread.sleep(20000);
-////				} catch (InterruptedException e) {
-////					e.printStackTrace();
-////				}
-////				System.out.println(at.incrementAndGet());
-//////				downloadUsingNIO(urlDownload, PATH + filename.split("/")[1]);
-////			});
-//			
-//		}
+//			this.executor.execute(() -> {
+//				downloadUsingNIO(urlDownload, prop.getCsv() + filename.split("/")[1]);
+//				System.out.println(at.incrementAndGet());
+//			});
+//		});
+
+//		ForkJoinPool forkJoinPool = new ForkJoinPool(4);
+//		this.executor.submit(() -> {
+			document.select("div[id=listing]").select("a").parallelStream().forEach((element) -> {
+				final String urlDownload = element.attr("abs:href");
+				final String filename = element.attr("href");
+				this.executor.submit(() -> {
+					downloadUsingNIO(urlDownload, prop.getCsv() + filename.split("/")[1]);
+					System.out.println(at.incrementAndGet());
+				});
+			});
+//		});
+
+		while (at.get() <= 78) {
+		}
 
 		return Collections.emptyList();
 	}
@@ -63,13 +79,16 @@ public class CrawlerCSVFolha {
 		}
 	}
 
-	private void downloadUsingNIO(String urlStr, String file) {
+	private void downloadUsingNIO(String urlStr, String filepath) {
+		if (Files.exists(Paths.get(filepath))) {
+			return;
+		}
 		ReadableByteChannel rbc = null;
 		FileOutputStream fos = null;
 		try {
 			URL url = new URL(urlStr);
 			rbc = Channels.newChannel(url.openStream());
-			fos = new FileOutputStream(file);
+			fos = new FileOutputStream(filepath);
 			fos.getChannel().transferFrom(rbc, 0, Long.MAX_VALUE);
 		} catch (IOException e) {
 			Logger.getLogger("download").info(e.getMessage());

@@ -13,4 +13,5 @@ public @interface MField {
 	public String type();
 	public String name();
 	public String format() default "";
+	public boolean index() default true;
 }

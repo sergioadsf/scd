@@ -1,9 +1,11 @@
+import groovy.json.JsonSlurper
 pipeline {
 	environment {
-    	//Use Pipeline Utility Steps plugin to read information from pom.xml into env variables
 		IMAGE = readMavenPom().getArtifactId()
     	VERSION = readMavenPom().getVersion()
     	folderpath = '/home/sergio/Downloads/teste'
+    	str = '{"id":"12345678","name":"Sharon","email":"sharonexample.com"}'
+		//slurper = new JsonSlurper().parseText(str)
   	}
    	
 	agent any
@@ -21,22 +23,54 @@ pipeline {
                 echo "BUILD_ID ${env.BUILD_ID}"
                 echo "JAVA_HOME ${env.JAVA_HOME}/bin:${env.PATH}"
 				echo "JAVA_HOME ${env.MAVEN_HOME}"
+				script {
+					if(CHOICE_ENV == "TEST"){
+						echo 'I only execute test'    
+				    }else {
+						echo 'I am not running test'    
+				    }				    
+				}
+		    
             }
         }
 		stage("Build") {
 			steps {
-    				sh 'git clone https://github.com/sergioadsf/scd.git ${folderpath}'
+				script{
+					if (fileExists(folderpath)) {
+						sh 'rm -rf ${folderpath}'
+						echo 'Yes'
+					} else {
+					    echo 'No'
+					}
+				}
+				sh 'git clone https://github.com/sergioadsf/scd.git ${folderpath}'
 			}
   		}
   		stage("Test") {
+  			input {
+				  message 'Teste? '
+				  ok 'Permitir'
+				  submitter 'sergioadsf'
+				  submitterParameter 'VALID_CHECK'
+				  parameters {
+				    booleanParam defaultValue: true, description: 'Fazer deploy em Teste?', name: 'validar'
+				  }
+				}
   		    steps {
 				sh 'mvn clean install -f ${folderpath}'
   		    }
   		}
   		stage("Deploy") {
   			steps {
-				echo "Current - ${currentBuild.result}"
+				echo "Subindo aplicação"
+				sh 'java -jar ${folderpath}/target/${IMAGE}-${VERSION}.jar &'
   			}
   		}
 	}
+	
+	post { 
+        always { 
+            echo 'I will always say Hello again!'
+        }
+    }
 }
