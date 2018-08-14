@@ -1,29 +1,19 @@
 import groovy.json.JsonSlurper
-pipeline {
-	
-	environment {
-    	//Use Pipeline Utility Steps plugin to read information from pom.xml into env variables
-		IMAGE = readMavenPom().getArtifactId()
-    	VERSION = readMavenPom().getVersion()
-    	folderpath = '/home/sergio/Downloads/teste'
-		str = '{"id":"12345678","name":"Sharon","email":"sharon\u0040example.com"}'
-		slurper = new JsonSlurper().parseText(str)
-  	}
+node {
 	
     	//Use Pipeline Utility Steps plugin to read information from pom.xml into env variables
-	//def IMAGE = readMavenPom().getArtifactId()
-	//def VERSION = readMavenPom().getVersion()
-	//def folderpath = '/home/sergio/Downloads/teste'
+	def IMAGE = readMavenPom().getArtifactId()
+	def VERSION = readMavenPom().getVersion()
+	def folderpath = '/home/sergio/Downloads/teste'
 	//def choice_env = ${CHOICE_ENV}
-	//def str = '{"id":"12345678","name":"Sharon","email":"sharon\u0040example.com"}'
-	//def slurper = new JsonSlurper().parseText(str)
+	def str = '{"id":"12345678","name":"Sharon","email":"sharon\u0040example.com"}'
+	def slurper = new JsonSlurper().parseText(str)
    	
-	agent any
+	//agent any
 	stages{
 	    
 
-		stage('Example') {		
-		steps {	
+		stage('Example') {			
                 echo "Running ${env.BUILD_ID} on ${env.JENKINS_URL}"
                 echo "DEPLOY_ENV = ${DEPLOY_ENV}"
                 echo "VALID_ENV = ${VALID_ENV}"
@@ -39,22 +29,16 @@ pipeline {
 		    }else {
 			echo 'I am not running test'    
 		    }
-		    }
         }
 		stage("Build") {
-		steps {
-    				sh 'git clone https://github.com/sergioadsf/scd.git ${folderpath}'
-    				}
+			echo slurper.name
+    				//sh 'git clone https://github.com/sergioadsf/scd.git ${folderpath}'
   		}
   		stage("Test") {
-  		steps {
-				sh 'mvn clean install -f ${folderpath}'
-				}
+				//sh 'mvn clean install -f ${folderpath}'
   		}
   		stage("Deploy") {
-  		steps {
-				echo "Current - ${currentBuild.result}"
-				}
+				//echo "Current - ${currentBuild.result}"
   		}
   		}
 }
