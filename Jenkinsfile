@@ -4,7 +4,7 @@ node {
 	def IMAGE = readMavenPom().getArtifactId()
 	def VERSION = readMavenPom().getVersion()
 	def folderpath = '/home/sergio/Downloads/teste'
-  	
+	//def choice_env = ${CHOICE_ENV}
    	
 	//agent any
 	
@@ -19,7 +19,7 @@ node {
                 echo "BUILD_ID ${env.BUILD_ID}"
                 echo "JAVA_HOME ${env.JAVA_HOME}/bin:${env.PATH}"
 				echo "JAVA_HOME ${env.MAVEN_HOME}"
-		    if(${CHOICE_ENV} == "Test"){
+		    if(CHOICE_ENV == "Test"){
 			echo 'I only execute test'    
 		    }else {
 			echo 'I am not running test'    
