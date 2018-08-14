@@ -25,7 +25,7 @@ pipeline {
                 echo "JAVA_HOME ${env.JAVA_HOME}/bin:${env.PATH}"
 				echo "JAVA_HOME ${env.MAVEN_HOME}"
 				when {
-					CHOICE_ENV 'PROD'
+					CHOICE_ENV "PROD"
 					echo 'I only execute test'    
 		    	}				    
 		    
