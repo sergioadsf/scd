@@ -5,7 +5,7 @@ pipeline {
     	VERSION = readMavenPom().getVersion()
     	folderpath = '/home/sergio/Downloads/teste'
     	str = '{"id":"12345678","name":"Sharon","email":"sharonexample.com"}'
-		//slurper = new JsonSlurper().parseText(str)
+		slurper = new JsonSlurper().parseText(str)
   	}
    	
 	agent any
@@ -45,7 +45,7 @@ pipeline {
   		}
   		stage("Deploy") {
   			steps {
-				echo "Current - ${currentBuild.result}"
+				echo "Current - ${currentBuild.result} - ${slurper}"
   			}
   		}
 	}
