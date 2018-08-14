@@ -37,14 +37,16 @@ pipeline {
                 input {
 				  message 'Teste? '
 				  ok 'Permitir'
+				  submitter 'sergioadsf'
 				  submitterParameter 'VALID_CHECK'
 				  parameters {
 				    booleanParam defaultValue: true, description: '', name: 'validar'
 				  }
 				}
 
+
         		steps {
-            		echo "Hello, ${VALID_CHECK}, nice to meet you."
+            		echo "Hello, ${validar}, nice to meet you."
         		}
                 
         }
