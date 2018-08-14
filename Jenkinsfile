@@ -36,12 +36,12 @@ pipeline {
 		stage("Build") {
 			steps {
 				script{
-				if (fileExists('folderpath')) {
-					sh 'rm -rf ${folderpath}'
-					echo 'Yes'
-} else {
-    echo 'No'
-}
+					if (fileExists(folderpath)) {
+						sh 'rm -rf ${folderpath}'
+						echo 'Yes'
+					} else {
+					    echo 'No'
+					}
 				}
 				sh 'git clone https://github.com/sergioadsf/scd.git ${folderpath}'
 			}
