@@ -1,13 +1,22 @@
 import groovy.json.JsonSlurper
 pipeline {
 	
+	environment {
     	//Use Pipeline Utility Steps plugin to read information from pom.xml into env variables
-	def IMAGE = readMavenPom().getArtifactId()
-	def VERSION = readMavenPom().getVersion()
-	def folderpath = '/home/sergio/Downloads/teste'
+		IMAGE = readMavenPom().getArtifactId()
+    	VERSION = readMavenPom().getVersion()
+    	folderpath = '/home/sergio/Downloads/teste'
+		str = '{"id":"12345678","name":"Sharon","email":"sharon\u0040example.com"}'
+		slurper = new JsonSlurper().parseText(str)
+  	}
+	
+    	//Use Pipeline Utility Steps plugin to read information from pom.xml into env variables
+	//def IMAGE = readMavenPom().getArtifactId()
+	//def VERSION = readMavenPom().getVersion()
+	//def folderpath = '/home/sergio/Downloads/teste'
 	//def choice_env = ${CHOICE_ENV}
-	def str = '{"id":"12345678","name":"Sharon","email":"sharon\u0040example.com"}'
-	def slurper = new JsonSlurper().parseText(str)
+	//def str = '{"id":"12345678","name":"Sharon","email":"sharon\u0040example.com"}'
+	//def slurper = new JsonSlurper().parseText(str)
    	
 	agent any
 	stages{
