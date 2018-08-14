@@ -21,17 +21,13 @@ pipeline {
                 
                 echo "IMAGE ${IMAGE}"
                 echo "VERSION ${VERSION}"
-                echo "BUILD_ID ${env.BUILD_ID}"
+			    echo "BUILD_ID ${env.BUILD_ID} -- ${slurper.id}"
                 echo "JAVA_HOME ${env.JAVA_HOME}/bin:${env.PATH}"
 				echo "JAVA_HOME ${env.MAVEN_HOME}"
-				script {
-					if(slurper.id == "12345678"){
-			echo 'I only execute test'    
-		    }else {
-			echo 'I am not running test'    
-		    }				    
-				}
-
+				when {
+					CHOICE_ENV 'PROD'
+					echo 'I only execute test'    
+		    	}				    
 		    
             }
         }
