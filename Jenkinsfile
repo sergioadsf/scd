@@ -5,7 +5,7 @@ pipeline {
 		IMAGE = readMavenPom().getArtifactId()
     	VERSION = readMavenPom().getVersion()
     	folderpath = '/home/sergio/Downloads/teste'
-    	str = '{"id":"12345678","name":"Sharon","email":"sharon\u0040example.com"}'
+    	str = '{"id":"12345678","name":"Sharon","email":"sharonexample.com"}'
 		slurper = new JsonSlurper().parseText(str)
   	}
    	
