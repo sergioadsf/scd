@@ -5,7 +5,7 @@ pipeline {
     	VERSION = readMavenPom().getVersion()
     	folderpath = '/home/sergio/Downloads/teste'
     	str = '{"id":"12345678","name":"Sharon","email":"sharonexample.com"}'
-		slurper = new JsonSlurper().parseText(str)
+		//slurper = new JsonSlurper().parseText(str)
   	}
    	
 	agent any
@@ -34,7 +34,9 @@ pipeline {
             }
         }
 		stage("Build") {
-			sh 'git clone https://github.com/sergioadsf/scd.git ${folderpath}'
+			steps {
+				sh 'git clone https://github.com/sergioadsf/scd.git ${folderpath}'
+			}
   		}
   		stage("Test") {
   		    steps {
