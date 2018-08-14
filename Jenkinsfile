@@ -1,5 +1,5 @@
 import groovy.json.JsonSlurper
-node {
+pipeline {
 	
     	//Use Pipeline Utility Steps plugin to read information from pom.xml into env variables
 	def IMAGE = readMavenPom().getArtifactId()
