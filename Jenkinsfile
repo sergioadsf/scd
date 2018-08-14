@@ -1,3 +1,4 @@
+import groovy.json.JsonSlurper
 node {
 	
     	//Use Pipeline Utility Steps plugin to read information from pom.xml into env variables
