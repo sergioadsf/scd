@@ -1,7 +1,6 @@
 import groovy.json.JsonSlurper
 pipeline {
 	environment {
-    	//Use Pipeline Utility Steps plugin to read information from pom.xml into env variables
 		IMAGE = readMavenPom().getArtifactId()
     	VERSION = readMavenPom().getVersion()
     	folderpath = '/home/sergio/Downloads/teste'
@@ -26,19 +25,16 @@ pipeline {
 				echo "JAVA_HOME ${env.MAVEN_HOME}"
 				script {
 					if(CHOICE_ENV == "TEST"){
-			echo 'I only execute test'    
-		    }else {
-			echo 'I am not running test'    
-		    }				    
+						echo 'I only execute test'    
+				    }else {
+						echo 'I am not running test'    
+				    }				    
 				}
-
 		    
             }
         }
 		stage("Build") {
-			steps {
-    				sh 'git clone https://github.com/sergioadsf/scd.git ${folderpath}'
-			}
+			sh 'git clone https://github.com/sergioadsf/scd.git ${folderpath}'
   		}
   		stage("Test") {
   		    steps {
