@@ -5,7 +5,7 @@ pipeline {
 		IMAGE = readMavenPom().getArtifactId()
     	VERSION = readMavenPom().getVersion()
     	folderpath = '/home/sergio/Downloads/teste'
-    	str = '{"id":"12345678","name":"Sharon","email":"sharon\u0040example.com"}'
+    	str = '{"id":"12345678","name":"Sergio","email":"sergio@example.com"}'
 		slurper = new JsonSlurper().parseText(str)
   	}
    	
@@ -25,7 +25,7 @@ pipeline {
                 echo "JAVA_HOME ${env.JAVA_HOME}/bin:${env.PATH}"
 				echo "JAVA_HOME ${env.MAVEN_HOME}"
 				script {
-					if(CHOICE_ENV == "Test"){
+					if(slurper.id == "12345678"){
 			echo 'I only execute test'    
 		    }else {
 			echo 'I am not running test'    
