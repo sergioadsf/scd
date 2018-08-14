@@ -8,7 +8,7 @@ import groovy.json.JsonSlurperClassic
 		echo "aqui ${workspace}"
   def json = readFile("output.json")
 def data = new JsonSlurperClassic().parseText(json)
-  echo json['version']['name']
+  echo data.version.name
 
   return json;
 }
