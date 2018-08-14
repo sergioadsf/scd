@@ -52,9 +52,6 @@ pipeline {
   		    }
   		}
   		stage("Deploy") {
-			environment {
-			//slurper = new JsonSlurper().parseText(str)
-  	}
   			steps {
 				echo "Current - ok"
   			}
