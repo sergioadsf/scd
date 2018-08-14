@@ -21,7 +21,6 @@ pipeline {
     	folderpath = '/home/sergio/Downloads/teste'
     	str = '{"id":"12345678","name":"Sharon","email":"sharonexample.com"}'
 		//slurper = new JsonSlurper().parseText(str)
-		sh "${curl} -o output.json"
   	}
    	
 	agent any
