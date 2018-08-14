@@ -21,6 +21,11 @@ pipeline {
                 echo "BUILD_ID ${env.BUILD_ID}"
                 echo "JAVA_HOME ${env.JAVA_HOME}/bin:${env.PATH}"
 				echo "JAVA_HOME ${env.MAVEN_HOME}"
+		    if(${CHOICE_ENV} == "Test"){
+			echo 'I only execute test'    
+		    }else {
+			echo 'I am not running test'    
+		    }
             }
         }
 		stage("Build") {
