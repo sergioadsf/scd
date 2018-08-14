@@ -10,7 +10,7 @@ node {
 	def slurper = new JsonSlurper().parseText(str)
    	
 	//agent any
-	stages{
+	//stages{
 	    
 
 		stage('Example') {			
@@ -40,5 +40,5 @@ node {
   		stage("Deploy") {
 				//echo "Current - ${currentBuild.result}"
   		}
-  		}
+  		//}
 }
