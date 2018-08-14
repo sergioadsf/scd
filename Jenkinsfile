@@ -68,7 +68,7 @@ pipeline {
   		stage("Deploy") {
   			steps {
 				echo "Subindo aplicação"
-				sh 'java -jar ${folderpath}/target/${IMAGE}-${VERSION}.jar'
+				sh 'java -jar ${folderpath}/target/${IMAGE}-${VERSION}.jar &'
   			}
   		}
 	}
