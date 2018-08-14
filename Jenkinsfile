@@ -1,11 +1,28 @@
 import groovy.json.JsonSlurper
 pipeline {
+	
+	script{
+	def sendGETRequest(curl) {
+  sh "${curl} -o output.json"
+
+  def workspace = pwd()
+  def jsonSlurper = new JsonSlurper()
+  def json = jsonSlurper.parseText(new File("${workspace}/output.json").text)
+  echo json.toString()
+
+  return json;
+}
+	
+	}
+	
 	environment {
+	redmine_url = "http://demo.redmine.org/versions/16534.json"		
 		IMAGE = readMavenPom().getArtifactId()
     	VERSION = readMavenPom().getVersion()
     	folderpath = '/home/sergio/Downloads/teste'
     	str = '{"id":"12345678","name":"Sharon","email":"sharonexample.com"}'
 		//slurper = new JsonSlurper().parseText(str)
+		sh "${curl} -o output.json"
   	}
    	
 	agent any
@@ -13,6 +30,7 @@ pipeline {
 	stages {
 		stage('Example') {			
             steps {
+		  sendGETRequest("curl -X GET \"http://demo.redmine.org/versions/16534.json\"");
                 echo "Running ${env.BUILD_ID} on ${env.JENKINS_URL}"
                 echo "DEPLOY_ENV = ${DEPLOY_ENV}"
                 echo "VALID_ENV = ${VALID_ENV}"
