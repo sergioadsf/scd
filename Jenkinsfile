@@ -6,8 +6,9 @@ import groovy.json.JsonSlurper
 
   def workspace = pwd()
 		echo "aqui ${workspace}"
-  def jsonSlurper = new JsonSlurper()
-  def json = jsonSlurper.parseText(readFile("${workspace}/output.json").text)
+  def json = readFile("${workspace}/output.json")
+		echo json
+def data = new JsonSlurperClassic().parseText(json)
   echo json.toString()
 
   return json;
