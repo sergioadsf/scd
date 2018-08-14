@@ -25,7 +25,7 @@ pipeline {
                 echo "JAVA_HOME ${env.JAVA_HOME}/bin:${env.PATH}"
 				echo "JAVA_HOME ${env.MAVEN_HOME}"
 				script {
-					if(CHOICE_ENV == "Test"){
+					if(CHOICE_ENV == "TEST"){
 			echo 'I only execute test'    
 		    }else {
 			echo 'I am not running test'    
