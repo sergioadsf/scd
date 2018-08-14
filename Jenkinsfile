@@ -1,16 +1,14 @@
-pipeline {
-	environment {
-    	//Use Pipeline Utility Steps plugin to read information from pom.xml into env variables
-		IMAGE = readMavenPom().getArtifactId()
-    	VERSION = readMavenPom().getVersion()
-    	folderpath = '/home/sergio/Downloads/teste'
-  	}
-   	
-	agent any
+node {
 	
-	stages {
+    	//Use Pipeline Utility Steps plugin to read information from pom.xml into env variables
+	def IMAGE = readMavenPom().getArtifactId()
+	def VERSION = readMavenPom().getVersion()
+	def folderpath = '/home/sergio/Downloads/teste'
+  	
+   	
+	//agent any
+	
 		stage('Example') {			
-            steps {
                 echo "Running ${env.BUILD_ID} on ${env.JENKINS_URL}"
                 echo "DEPLOY_ENV = ${DEPLOY_ENV}"
                 echo "VALID_ENV = ${VALID_ENV}"
@@ -26,22 +24,14 @@ pipeline {
 		    }else {
 			echo 'I am not running test'    
 		    }
-            }
         }
 		stage("Build") {
-			steps {
     				sh 'git clone https://github.com/sergioadsf/scd.git ${folderpath}'
-			}
   		}
   		stage("Test") {
-  		    steps {
 				sh 'mvn clean install -f ${folderpath}'
-  		    }
   		}
   		stage("Deploy") {
-  			steps {
 				echo "Current - ${currentBuild.result}"
-  			}
   		}
-	}
 }
