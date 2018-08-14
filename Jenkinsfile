@@ -1,5 +1,5 @@
 node {
-	import groovy.json.JsonSlurper
+	
     	//Use Pipeline Utility Steps plugin to read information from pom.xml into env variables
 	def IMAGE = readMavenPom().getArtifactId()
 	def VERSION = readMavenPom().getVersion()
