@@ -24,9 +24,13 @@ pipeline {
 			    echo "BUILD_ID ${env.BUILD_ID} -- ${slurper.id}"
                 echo "JAVA_HOME ${env.JAVA_HOME}/bin:${env.PATH}"
 				echo "JAVA_HOME ${env.MAVEN_HOME}"
-				when {
-					slurper.id "12345678"
-					echo 'I only execute test'    
+				script {
+					if(slurper.id == "12345678"){
+						echo 'I only execute test'    
+      	              }else {
+						echo 'POW'    
+      	                  
+      	              }
 		    	}				    
 		    
             }
