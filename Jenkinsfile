@@ -9,7 +9,7 @@ pipeline {
 	def str = '{"id":"12345678","name":"Sharon","email":"sharon\u0040example.com"}'
 	def slurper = new JsonSlurper().parseText(str)
    	
-	//agent any
+	agent any
 	stages{
 	    
 
