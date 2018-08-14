@@ -33,23 +33,6 @@ pipeline {
 		    
             }
         }
-        stage('Example2'){
-                input {
-				  message 'Teste? '
-				  ok 'Permitir'
-				  submitter 'sergioadsf'
-				  submitterParameter 'VALID_CHECK'
-				  parameters {
-				    booleanParam defaultValue: true, description: '', name: 'validar'
-				  }
-				}
-
-
-        		steps {
-            		echo "Hello, ${validar}, nice to meet you."
-        		}
-                
-        }
 		stage("Build") {
 			steps {
 				script{
@@ -64,6 +47,19 @@ pipeline {
 			}
   		}
   		stage("Test") {
+  			input {
+				  message 'Teste? '
+				  ok 'Permitir'
+				  submitter 'sergioadsf'
+				  submitterParameter 'VALID_CHECK'
+				  parameters {
+				    booleanParam defaultValue: true, description: 'Fazer deploy em Teste?', name: 'validar'
+				  }
+				}
+
+        		steps {
+            		echo "Hello, ${validar}, nice to meet you."
+        		}
   		    steps {
 				sh 'mvn clean install -f ${folderpath}'
   		    }
