@@ -35,15 +35,16 @@ pipeline {
         }
         stage('Example2'){
                 input {
-                	message "Should we continue?"
-                	ok "Yes, we should."
-                	submitter "sergio,bob"
-                	parameters {
-                    string(name: 'PERSON', defaultValue: 'Mr Jenkins', description: 'Who should I say hello to?')
-                	}
-            	}
+				  message 'Teste? '
+				  ok 'Permitir'
+				  submitterParameter 'VALID_CHECK'
+				  parameters {
+				    booleanParam defaultValue: true, description: '', name: 'validar'
+				  }
+				}
+
         		steps {
-            		echo "Hello, ${PERSON}, nice to meet you."
+            		echo "Hello, ${VALID_CHECK}, nice to meet you."
         		}
                 
         }
