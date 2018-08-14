@@ -1,7 +1,6 @@
 import groovy.json.JsonSlurper
-pipeline {
-	
-	script{
+
+
 	def sendGETRequest(curl) {
   sh "${curl} -o output.json"
 
@@ -12,8 +11,8 @@ pipeline {
 
   return json;
 }
-	
-	}
+
+pipeline {
 	
 	environment {
 	redmine_url = "http://demo.redmine.org/versions/16534.json"		
