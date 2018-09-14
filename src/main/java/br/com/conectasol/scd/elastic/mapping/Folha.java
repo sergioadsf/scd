@@ -13,26 +13,26 @@ public class Folha {
 	@CsvBindByName(column = "ANOMES")
 	private String anoMes;
 
-//	@MField(name = "codigo_orgao", type = "integer", index = false)
+//	//@MField(name = "codigo_orgao", type = "integer", index = false)
 	@CsvBindByName(column = "CODORGAO")
 	private String codOrgao;
 
-	@MField(name = "nome_cargo_secundario", type = "text")
+	//@MField(name = "nome_cargo_secundario", type = "text")
 	@CsvBindByName(column = "NOMECARGOSECUNDARIO")
 	private String nomeCargoSecundario;
 
-	@MField(name = "simbolo_cargo", type = "keyword", index = true)
+	//@MField(name = "simbolo_cargo", type = "keyword", index = true)
 	@CsvBindByName(column = "SIMBOLOCARGOSECUNDARIO")
 	private String simboloCargoSecundario;
 
-	@MField(name = "nivel_salario_secundario", type = "keyword", index = false)
+	//@MField(name = "nivel_salario_secundario", type = "keyword", index = false)
 	@CsvBindByName(column = "NIVELSALARIALSECUNDARIO")
 	private String nivelSalarialSecundario;
 
 	@CsvBindByName(column = "SIMBOLOCARGO")
 	private String simboloCargo;
 
-	@MField(name = "nome_cargo", type = "keyword", index = true)
+	//@MField(name = "nome_cargo", type = "keyword", index = true)
 	@CsvBindByName(column = "NOMECARGO")
 	private String nomeCargo;
 
@@ -42,7 +42,7 @@ public class Folha {
 	@CsvBindByName(column = "ORGAO")
 	private String orgao;
 
-	@MField(name = "nome_servidor", type = "text")
+	//@MField(name = "nome_servidor", type = "text")
 	@CsvBindByName(column = "NOMESERVIDOR")
 	private String nomeServidor;
 
@@ -61,11 +61,11 @@ public class Folha {
 	@CsvBindByName(column = "VALORLIQUIDO")
 	private String valorLiquido;
 
-	@MField(name = "valor_provento", type = "double")
+	//@MField(name = "valor_provento", type = "double")
 	@CsvBindByName(column = "VALORPROVENTO")
 	private String valorProvento;
 
-	@MField(name = "valor_provento_mes", type = "double")
+	//@MField(name = "valor_provento_mes", type = "double")
 	@CsvBindByName(column = "VALORPROVENTOMES")
 	private String valorproventomes;
 
