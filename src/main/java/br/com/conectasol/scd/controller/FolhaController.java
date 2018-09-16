@@ -38,6 +38,7 @@ public class FolhaController {
 		try {
 			long start = System.currentTimeMillis();
 			folhaService.indexar(anomes);
+//			folhaService.test();
 			long elapsed = System.currentTimeMillis() - start;
 			System.out.println(elapsed);
 			return "ok - "+elapsed;
@@ -47,10 +48,10 @@ public class FolhaController {
 	}
 
 	@PostMapping(path = "/indexallcsv")
-	public String indexallcsv(String anomes) {
+	public String indexallcsv() {
 		try {
 			long start = System.currentTimeMillis();
-			folhaService.indexar(anomes);
+			folhaService.indexarTodos();
 			long elapsed = System.currentTimeMillis() - start;
 			System.out.println(elapsed);
 			return "ok - "+elapsed;
