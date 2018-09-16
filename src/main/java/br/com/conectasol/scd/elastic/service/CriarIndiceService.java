@@ -21,7 +21,7 @@ public class CriarIndiceService extends AbsElasticService {
 
 	public void criar() throws IOException {
 
-		RestHighLevelClient client = this.openConnection();
+		RestHighLevelClient client = this.openHighConnection();
 		CreateIndexRequest request = null;
 
 		Reflections reflections = new Reflections("br.com.conectasol.scd.elastic.mapping");
@@ -41,7 +41,7 @@ public class CriarIndiceService extends AbsElasticService {
 
 			Map<String, Object> mappingMap = new HashMap<>();
 			mappingMap.put("properties", properties);
-			request.mapping(index.name(), mappingMap);
+			request.mapping("_doc", mappingMap);
 			client.indices().create(request);
 		}
 		this.close(client);

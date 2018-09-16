@@ -1,5 +1,6 @@
 package br.com.conectasol.scd.crawler.service;
 
+import java.io.File;
 import java.io.FileOutputStream;
 import java.io.IOException;
 import java.net.URL;
@@ -16,6 +17,7 @@ import java.util.logging.Logger;
 
 import javax.annotation.PostConstruct;
 
+import org.apache.commons.io.FileUtils;
 import org.jsoup.Jsoup;
 import org.jsoup.nodes.Document;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -23,6 +25,7 @@ import org.springframework.stereotype.Service;
 
 import br.com.conectasol.scd.util.CloseUtil;
 import br.com.conectasol.scd.util.PathProperties;
+import br.com.conectasol.scd.util.UTF8ToAnsiUtils;
 
 @Service
 public class CrawlerCSVFolha {
@@ -51,14 +54,14 @@ public class CrawlerCSVFolha {
 
 //		ForkJoinPool forkJoinPool = new ForkJoinPool(4);
 //		this.executor.submit(() -> {
-			document.select("div[id=listing]").select("a").parallelStream().forEach((element) -> {
-				final String urlDownload = element.attr("abs:href");
-				final String filename = element.attr("href");
-				this.executor.submit(() -> {
-					downloadUsingNIO(urlDownload, prop.getCsv() + filename.split("/")[1]);
-					System.out.println(at.incrementAndGet());
-				});
+		document.select("div[id=listing]").select("a").parallelStream().forEach((element) -> {
+			final String urlDownload = element.attr("abs:href");
+			final String filename = element.attr("href");
+			this.executor.submit(() -> {
+				downloadUsingNIO(urlDownload, prop.getCsv() + filename.split("/")[1]);
+				System.out.println(at.incrementAndGet());
 			});
+		});
 //		});
 
 		while (at.get() <= 78) {
@@ -67,33 +70,40 @@ public class CrawlerCSVFolha {
 		return Collections.emptyList();
 	}
 
-	public static void main(String[] args) {
-		try {
-			long start = System.currentTimeMillis();
-			new CrawlerCSVFolha().buscarArquivos();
-			long elapsed = System.currentTimeMillis() - start;
-			System.out.println(elapsed);
-		} catch (IOException e) {
-			Logger.getLogger("finish").info(e.getMessage());
-		}
-	}
-
 	private void downloadUsingNIO(String urlStr, String filepath) {
 		if (Files.exists(Paths.get(filepath))) {
 			return;
 		}
-		ReadableByteChannel rbc = null;
-		FileOutputStream fos = null;
-		try {
-			URL url = new URL(urlStr);
-			rbc = Channels.newChannel(url.openStream());
-			fos = new FileOutputStream(filepath);
-			fos.getChannel().transferFrom(rbc, 0, Long.MAX_VALUE);
-		} catch (IOException e) {
-			Logger.getLogger("download").info(e.getMessage());
-		} finally {
-			CloseUtil.close(fos, rbc);
+		
+		UTF8ToAnsiUtils.convert(urlStr, filepath);
+	}
+
+	private static void run() {
+		String urlStr = "/home/sergio/Downloads/files/";
+		String urlStr2 = "/home/sergio/Downloads/files2/";
+		File folder = new File(urlStr2);
+		for (File file : folder.listFiles()) {
+			String absolutePath = file.getAbsolutePath();
+			if (!absolutePath.endsWith(".csv")) {
+				continue;
+			}
+
+			UTF8ToAnsiUtils.convert(absolutePath, urlStr + file.getName());
 		}
+
+	}
+
+	public static void main(String[] args) {
+		run();
+
+//		try {
+//			long start = System.currentTimeMillis();
+//			new CrawlerCSVFolha().buscarArquivos();
+//			long elapsed = System.currentTimeMillis() - start;
+//			System.out.println(elapsed);
+//		} catch (IOException e) {
+//			Logger.getLogger("finish").info(e.getMessage());
+//		}
 	}
 
 }
