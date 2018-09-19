@@ -23,11 +23,8 @@ import javax.annotation.PostConstruct;
 import org.apache.http.HttpEntity;
 import org.apache.http.entity.ContentType;
 import org.apache.http.nio.entity.NStringEntity;
-import org.elasticsearch.action.bulk.BulkRequest;
-import org.elasticsearch.action.index.IndexRequest;
 import org.elasticsearch.client.Response;
 import org.elasticsearch.client.RestClient;
-import org.elasticsearch.client.RestHighLevelClient;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -65,29 +62,6 @@ public class FolhaService extends AbsElasticService {
 		try (Reader reader = Files.newBufferedReader(Paths.get(p), Charset.forName("UTF-8"));) {
 			return new CsvToBeanBuilder(reader).withType(Folha.class).withSeparator(';')
 					.withQuoteChar(CSVWriter.DEFAULT_QUOTE_CHARACTER).withSkipLines(0).build().parse();
-		}
-	}
-
-	public void indexar2(String anomes) {
-		try {
-			final RestHighLevelClient client = this.openHighConnection();
-
-			final BulkRequest request = new BulkRequest();
-			read(anomes).stream().forEach(folha -> {
-				try {
-					MIndex mIndex = folha.getClass().getAnnotation(MIndex.class);
-					String name = mIndex.name();
-					request.add(new IndexRequest(name, "_doc", UUID.randomUUID().toString())
-							.source(this.prepareJson2(folha)));
-				} catch (Exception e) {
-					e.printStackTrace();
-				}
-			});
-
-			client.bulk(request);
-			this.close(client);
-		} catch (Exception e) {
-			e.printStackTrace();
 		}
 	}
 
@@ -202,9 +176,6 @@ public class FolhaService extends AbsElasticService {
 			if (field.isAnnotationPresent(MField.class)) {
 				field.setAccessible(true);
 				MField mField = field.getAnnotation(MField.class);
-//				if(mField.name().equals("ano_mes")) {
-//					System.out.println(folha.getAnoMes());
-//				}
 				jsonB.append("\"").append(mField.name()).append("\":\"");
 				Object obj = field.get(folha);
 				if (Stream.of("double", "float").anyMatch(p -> mField.type().equals(p))) {
