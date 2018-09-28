@@ -13,7 +13,7 @@ public class Folha {
 	@CsvBindByName(column = "ANOMES")
 	private String anoMes;
 
-//	@MField(name = "codigo_orgao", type = "integer", index = false)
+	@MField(name = "codigo_orgao", type = "integer", index = false)
 	@CsvBindByName(column = "CODORGAO")
 	private String codOrgao;
 
@@ -46,18 +46,23 @@ public class Folha {
 	@CsvBindByName(column = "NOMESERVIDOR")
 	private String nomeServidor;
 
+	@MField(name = "valor_teto", type = "double")
 	@CsvBindByName(column = "VALORCORTETETO")
 	private String valorCorteTeto;
 
+	@MField(name = "valor_decimo_terceiro", type = "double")
 	@CsvBindByName(column = "VALORDECIMOTERCEIRO")
 	private String valorDecimoTerceiro;
 
+	@MField(name = "valor_descontos", type = "double")
 	@CsvBindByName(column = "VALORDEMAISDESCONTOS")
 	private String valorDemaisDescontos;
 
+	@MField(name = "valor_ferias", type = "double")
 	@CsvBindByName(column = "VALORFERIAS")
 	private String valorFerias;
 
+	@MField(name = "valor_liquido", type = "double")
 	@CsvBindByName(column = "VALORLIQUIDO")
 	private String valorLiquido;
 

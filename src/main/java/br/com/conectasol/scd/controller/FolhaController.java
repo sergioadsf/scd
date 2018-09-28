@@ -47,6 +47,21 @@ public class FolhaController {
 		}
 	}
 
+	@PostMapping(path = "/consultar")
+	public String consultar(String nome, int tamanho) {
+		try {
+			long start = System.currentTimeMillis();
+			String body = folhaService.consultar(nome, tamanho);
+//			folhaService.test();
+			long elapsed = System.currentTimeMillis() - start;
+			System.out.println(elapsed);
+			return "ok - "+elapsed+ "\n\n" + body;
+		} catch (Exception e) {
+			return e.getMessage();
+		}
+	}
+
+	
 	@PostMapping(path = "/indexallcsv")
 	public String indexallcsv() {
 		try {
