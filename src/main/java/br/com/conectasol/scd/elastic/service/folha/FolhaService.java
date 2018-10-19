@@ -7,6 +7,7 @@ import java.lang.reflect.Field;
 import java.nio.charset.Charset;
 import java.nio.file.Files;
 import java.nio.file.Paths;
+import java.util.Collections;
 import java.util.List;
 import java.util.Map;
 import java.util.UUID;
@@ -18,7 +19,6 @@ import java.util.stream.Stream;
 
 import javax.annotation.PostConstruct;
 
-import org.aspectj.util.UtilClassLoader;
 import org.elasticsearch.client.RestClient;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -31,11 +31,12 @@ import br.com.conectasol.scd.annotation.MIndex;
 import br.com.conectasol.scd.elastic.mapping.Folha;
 import br.com.conectasol.scd.elastic.service.AbsElasticService;
 import br.com.conectasol.scd.elastic.service.BulkBuilder;
-import br.com.conectasol.scd.util.CloseUtil;
 import br.com.conectasol.scd.util.PathProperties;
 
 @Service
 public class FolhaService extends AbsElasticService {
+
+	private int SIZE_DEFAULT = 2000;
 
 	@Autowired
 	private PathProperties prop;
@@ -75,7 +76,7 @@ public class FolhaService extends AbsElasticService {
 							.addComando("index").addJson(this.prepareJson(folha)).build())
 					.collect(Collectors.joining()));
 
-			doBulk(client, jBuilder);
+			this.doBulk(client, jBuilder);
 			System.out.println("FIM");
 		} catch (Exception e) {
 			e.printStackTrace();
@@ -103,16 +104,16 @@ public class FolhaService extends AbsElasticService {
 		}
 	}
 
-	static long size = 0L;
-
 	public void indexarTodos() {
 		try {
 			final RestClient client = this.openConnection();
 			MIndex mIndex = Folha.class.getAnnotation(MIndex.class);
 			String name = mIndex.name();
 
-			StringBuilder jBuilder = new StringBuilder();
+			StringBuffer jBuilder = new StringBuffer();
 			File folder = new File(prop.getCsv());
+			int init = 0;
+			int end = 0;
 			for (File file : folder.listFiles()) {
 				String absolutePath = file.getAbsolutePath();
 				if (!absolutePath.contains(".csv")) {
@@ -121,20 +122,43 @@ public class FolhaService extends AbsElasticService {
 //				this.executor.submit(() -> {
 				System.out.println(absolutePath);
 
-				at.incrementAndGet();
+//				at.incrementAndGet();
 				List<Folha> parse = this.doRead(absolutePath);
+				int size = parse.size();
+				int div = size / SIZE_DEFAULT;
+				int rest = size % SIZE_DEFAULT;
 
-				jBuilder.append(parse
-						.stream().map(folha -> BulkBuilder.init(name).addId(UUID.randomUUID().toString())
-								.addComando("index").addJson(this.prepareJson(folha)).build())
-						.collect(Collectors.joining()));
-				size = size + parse.size();
-				this.doBulk(client, jBuilder);
-				jBuilder = new StringBuilder();
+				for (int cont = 0; cont <= div; cont++) {
+					init = cont * SIZE_DEFAULT;
+					if (cont == div && rest > 0) {
+						end = size;
+					} else if (cont < div) {
+						end = init + SIZE_DEFAULT;
+					} else {
+						break;
+					}
 
-				System.out.println("FIM");
-				at.decrementAndGet();
-				System.out.println("Decrementou -> " + at.get());
+//					System.out.println(init +" - " +end);
+					List<Folha> synchronizedList = Collections.synchronizedList(parse.subList(init, end));
+
+//					this.executor.submit(() -> {
+						jBuilder.append(synchronizedList.stream()
+								.map(folha -> BulkBuilder.init(name).addId(UUID.randomUUID().toString())
+										.addComando("index").addJson(this.prepareJson(folha)).build())
+								.collect(Collectors.joining()));
+						try {
+							this.doBulk(client, jBuilder);
+						} catch (IOException e) {
+							e.printStackTrace();
+						}
+//					});
+//					Thread.sleep(5000);
+					jBuilder.setLength(0);
+
+//					at.decrementAndGet();
+//					System.out.println("Decrementou -> " + at.get());
+				}
+
 //				});
 			}
 
@@ -144,7 +168,6 @@ public class FolhaService extends AbsElasticService {
 //				Thread.sleep(10000);
 //			}
 			System.out.println(at.get());
-			System.out.println("Tamanho -> " + size);
 
 			this.close(client);
 		} catch (Exception e) {

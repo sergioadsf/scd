@@ -20,6 +20,7 @@ import br.com.conectasol.scd.util.CloseUtil;
 
 public abstract class AbsElasticService {
 
+	private static final int TIMEOUT = 60000;
 	protected ThreadPoolExecutor executor;
 
 	private RestClientBuilder createConnection() {
@@ -27,9 +28,9 @@ public abstract class AbsElasticService {
 				.setRequestConfigCallback(new RestClientBuilder.RequestConfigCallback() {
 					@Override
 					public RequestConfig.Builder customizeRequestConfig(RequestConfig.Builder requestConfigBuilder) {
-						return requestConfigBuilder.setConnectTimeout(5000).setSocketTimeout(60000);
+						return requestConfigBuilder.setConnectTimeout(TIMEOUT).setSocketTimeout(TIMEOUT);
 					}
-				}).setMaxRetryTimeoutMillis(60000);
+				}).setMaxRetryTimeoutMillis(TIMEOUT);
 	}
 
 	protected RestClient openConnection() {
@@ -55,7 +56,15 @@ public abstract class AbsElasticService {
 		return EntityUtils.toString(response.getEntity());
 	}
 
+	protected void doBulk(final RestClient client, StringBuffer jBuilder) throws IOException {
+		this.doBulk(client, jBuilder.toString());
+	}
+
 	protected void doBulk(final RestClient client, StringBuilder jBuilder) throws IOException {
+		this.doBulk(client, jBuilder.toString());
+	}
+
+	protected void doBulk(final RestClient client, String jBuilder) throws IOException {
 //		Request request = new Request("POST", "_bulk", );
 		HttpEntity entity = new NStringEntity(jBuilder.toString(), ContentType.APPLICATION_JSON);
 //		request.setEntity(entity);
