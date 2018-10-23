@@ -36,7 +36,7 @@ import br.com.conectasol.scd.util.PathProperties;
 @Service
 public class FolhaService extends AbsElasticService {
 
-	private int SIZE_DEFAULT = 2000;
+	private int SIZE_DEFAULT = 3000;
 
 	@Autowired
 	private PathProperties prop;

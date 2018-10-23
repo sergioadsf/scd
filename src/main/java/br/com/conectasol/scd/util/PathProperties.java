@@ -11,6 +11,7 @@ public class PathProperties {
 
 	private String csv;
 	private String urlfolha;
+	private String propostas;
 
 	public String getCsv() {
 		return csv;
@@ -26,6 +27,14 @@ public class PathProperties {
 
 	public void setUrlfolha(String urlfolha) {
 		this.urlfolha = urlfolha;
+	}
+
+	public String getPropostas() {
+		return propostas;
+	}
+
+	public void setPropostas(String propostas) {
+		this.propostas = propostas;
 	}
 
 }

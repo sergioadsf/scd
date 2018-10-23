@@ -9,22 +9,25 @@ import java.util.UUID;
 import org.elasticsearch.action.index.IndexRequest;
 import org.elasticsearch.client.RestClient;
 import org.elasticsearch.client.RestHighLevelClient;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import br.com.conectasol.scd.annotation.MIndex;
 import br.com.conectasol.scd.doc.service.PDFExtractor;
 import br.com.conectasol.scd.elastic.mapping.Proposta;
+import br.com.conectasol.scd.util.PathProperties;
 
 @Service
 public class IndexarDoc extends AbsElasticService {
 
-	private static final String PATH = "/home/sergio/Downloads/arquivos_para_indexar/";
+	@Autowired
+	private PathProperties prop;
 
 	public void indexarLote() throws Exception {
 		final RestHighLevelClient client = this.openHighConnection();
 
 		PDFExtractor pdfExtractor;
-		File file = new File(PATH);
+		File file = new File(prop.getPropostas());
 		for (File f : file.listFiles()) {
 			String name = f.getName();
 			if (f.isFile() && name.contains(".pdf")) {
