@@ -13,6 +13,7 @@ import org.elasticsearch.common.settings.Settings;
 import org.reflections.Reflections;
 import org.springframework.stereotype.Service;
 
+import br.com.conectasol.scd.annotation.Keyword;
 import br.com.conectasol.scd.annotation.MField;
 import br.com.conectasol.scd.annotation.MIndex;
 
@@ -60,12 +61,15 @@ public class CriarIndiceService extends AbsElasticService {
 	private void criarFields(Class<?> controller, Map<String, Object> properties) {
 		for (Field field : controller.getDeclaredFields()) {
 			MField mapping = field.getAnnotation(MField.class);
+			Map<String, Object> fieldMap = new HashMap<>();
 			if (mapping != null) {
-				Map<String, Object> fieldMap = new HashMap<>();
 				String type = mapping.type();
 				fieldMap.put("type", type);
 				if("keyword".equals(type)) {
 					fieldMap.put("index", mapping.index());
+				}
+				if("text".equals(type)) {
+					this.criarKeyword(field, fieldMap, mapping);
 				}
 				String format = mapping.format();
 				if (!"".equals(format)) {
@@ -73,7 +77,23 @@ public class CriarIndiceService extends AbsElasticService {
 				}
 				
 				properties.put(mapping.name(), fieldMap);
+			} else {
+				this.criarKeyword(field, fieldMap, null);
 			}
+		}
+	}
+
+	private void criarKeyword(Field field, Map<String, Object> fieldMap, MField mapping) {
+		Keyword keyword = field.getAnnotation(Keyword.class);
+		if(keyword != null) {
+			Map<String, Object> param = new HashMap<>();
+			if(mapping != null) {
+				Map<String, Object> kwmap = new HashMap<>();
+				fieldMap.put("fields", kwmap);
+				kwmap.put("keyword", param);
+			}
+			
+			param.put("type", "keyword");
 		}
 	}
 }

@@ -67,10 +67,10 @@ public class PDFExtractor {
 					}
 				}
 				isInicioLinha = true;
-				System.out.println(sb.toString());
+//				System.out.println(sb.toString());
 				sb.append("\n");
 			}
-			System.out.println();
+//			System.out.println();
 		}
 		return sb.toString();
 	}

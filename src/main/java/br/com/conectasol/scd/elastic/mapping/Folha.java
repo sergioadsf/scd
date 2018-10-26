@@ -2,6 +2,7 @@ package br.com.conectasol.scd.elastic.mapping;
 
 import com.opencsv.bean.CsvBindByName;
 
+import br.com.conectasol.scd.annotation.Keyword;
 import br.com.conectasol.scd.annotation.MField;
 import br.com.conectasol.scd.annotation.MIndex;
 
@@ -29,19 +30,23 @@ public class Folha {
 	@CsvBindByName(column = "NIVELSALARIALSECUNDARIO")
 	private String nivelSalarialSecundario;
 
+	@Keyword
 	@CsvBindByName(column = "SIMBOLOCARGO")
 	private String simboloCargo;
 
-	@MField(name = "nome_cargo", type = "keyword", index = true)
+	@Keyword
+	@MField(name = "nome_cargo", type = "text", index = true)
 	@CsvBindByName(column = "NOMECARGO")
 	private String nomeCargo;
 
+	@Keyword
 	@CsvBindByName(column = "NIVELSALARIAL")
 	private String nivelSalarial;
 
 	@CsvBindByName(column = "ORGAO")
 	private String orgao;
 
+	@Keyword
 	@MField(name = "nome_servidor", type = "text")
 	@CsvBindByName(column = "NOMESERVIDOR")
 	private String nomeServidor;
