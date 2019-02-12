@@ -2,6 +2,7 @@ package br.com.conectasol.scd.elastic.mapping;
 
 import com.opencsv.bean.CsvBindByName;
 
+import br.com.conectasol.scd.annotation.Fielddata;
 import br.com.conectasol.scd.annotation.Keyword;
 import br.com.conectasol.scd.annotation.MField;
 import br.com.conectasol.scd.annotation.MIndex;
@@ -9,7 +10,7 @@ import br.com.conectasol.scd.annotation.MIndex;
 @MIndex(name = "folhapagamento")
 public class Folha {
 
-	
+	@Fielddata
 	@MField(name = "ano_mes", type = "text")
 	@CsvBindByName(column = "ANOMES")
 	private String anoMes;

@@ -13,6 +13,7 @@ import org.elasticsearch.common.settings.Settings;
 import org.reflections.Reflections;
 import org.springframework.stereotype.Service;
 
+import br.com.conectasol.scd.annotation.Fielddata;
 import br.com.conectasol.scd.annotation.Keyword;
 import br.com.conectasol.scd.annotation.MField;
 import br.com.conectasol.scd.annotation.MIndex;
@@ -70,6 +71,7 @@ public class CriarIndiceService extends AbsElasticService {
 				}
 				if("text".equals(type)) {
 					this.criarKeyword(field, fieldMap, mapping);
+					this.criarFielddata(field, fieldMap, mapping);
 				}
 				String format = mapping.format();
 				if (!"".equals(format)) {
@@ -94,6 +96,16 @@ public class CriarIndiceService extends AbsElasticService {
 			}
 			
 			param.put("type", "keyword");
+		}
+	}
+	
+	private void criarFielddata(Field field, Map<String, Object> fieldMap, MField mapping) {
+		Fielddata keyword = field.getAnnotation(Fielddata.class);
+		if(keyword != null) {
+			if(mapping != null) {
+				fieldMap.put("fielddata", true);
+			}
+			
 		}
 	}
 }

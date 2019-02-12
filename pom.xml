@@ -127,6 +127,18 @@
 			<artifactId>async-http-client</artifactId>
 			<version>${asynchttpclient.version}</version>
 		</dependency>
+		
+		<dependency>
+			<groupId>br.com.conectasol</groupId>
+			<artifactId>elasticsearch-annotation</artifactId>
+			<version>0.0.1-SNAPSHOT</version>
+		</dependency>
+		
+		<dependency>
+			<groupId>br.com.conectasol</groupId>
+			<artifactId>elasticsearch-utils</artifactId>
+			<version>0.0.1-SNAPSHOT</version>
+		</dependency>
 
 		<!-- <dependency> <groupId>edu.uci.ics</groupId> <artifactId>crawler4j</artifactId> 
 			<version>4.4.0</version> <exclusions> <exclusion> <groupId>com.sleepycat</groupId> 
