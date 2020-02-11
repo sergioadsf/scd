@@ -24,6 +24,8 @@ public class UTF8ToAnsiUtils {
 //			URL url = new URL(filepath[0]);
 			boolean firstLine = true;
 //			fis = new FileInputStream(url.getFile());
+			System.out.println("Caminho0: "+filepath[0]);
+			System.out.println("Caminho1: "+filepath[1]);
 			r = new BufferedReader(new InputStreamReader(in, "UTF8"));
 			fos = new FileOutputStream(filepath[1]);
 			w = new BufferedWriter(new OutputStreamWriter(fos, "UTF8"));

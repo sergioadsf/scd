@@ -34,6 +34,7 @@ public class CrawlerCSVFolha {
 	}
 
 	public List<String> buscarArquivos() throws IOException {
+		System.out.println("url folha: "+prop.getUrlfolha());
 		Document document = Jsoup.connect(prop.getUrlfolha()).get();
 
 //		document.select("div[id=listing]").select("a").parallelStream().forEach((element) -> {
