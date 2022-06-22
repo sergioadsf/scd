@@ -24,7 +24,7 @@
 		<project.reporting.outputEncoding>UTF-8</project.reporting.outputEncoding>
 		<java.version>1.8</java.version>
 
-		<elasticsearch.version>6.3.1</elasticsearch.version>
+		<elasticsearch.version>6.8.15</elasticsearch.version>
 		<swagger.version>2.8.0</swagger.version>
 		<pdfbox.version>2.0.9</pdfbox.version>
 		<tika.version>1.18</tika.version>
